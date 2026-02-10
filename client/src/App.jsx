@@ -11,7 +11,7 @@ function App() {
     if (!question.trim()) return;
     setLoading(true);
     try {
-      const res = await axios.post('${API_URL}/api/ask', { question });
+      const res = await axios.post(`${API_URL}/api/ask`, { question });
       setAnswer(res.data.answer);
     } catch (err) {
       setAnswer("❌ Error: Gateway or AI Service is offline.");
