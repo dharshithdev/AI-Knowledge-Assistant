@@ -68,7 +68,7 @@ def ask_ai(question):
     try:
         response = chain.invoke(question)
         return response;
-    except Exception as e:
+    except Exception as e: 
         return(f"Error : {str(e)}");
 
 if __name__ == "__main__":

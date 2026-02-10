@@ -10,12 +10,15 @@ app = FastAPI()
 # SECURITY: Allow your React app to talk to this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, change this to your frontend URL
+    allow_origins=[
+        "https://ai-knowledge-assistant-nine.vercel.app", # Your live site
+        "http://localhost:5173"                          # Keep this for local testing!
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-class ChatRequest(BaseModel):
+class ChatRequest(BaseModel): 
     question: str
 
 @app.post("/ask")

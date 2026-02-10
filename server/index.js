@@ -6,13 +6,12 @@ require('dotenv').config();
 const app = express();
 const PORT = 5000; 
 
-// Middleware
+// Middleware 
 app.use(cors());
 app.use(express.json());
 
 const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://127.0.0.1:8000";
 
-// 2. Update the route
 app.post('/api/ask', async (req, res) => {
     try {
         const { question } = req.body;
