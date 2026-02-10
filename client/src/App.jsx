@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function App() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
@@ -25,7 +26,7 @@ function App() {
       <header className="border-b border-slate-800 p-6 bg-slate-900/50 backdrop-blur-md sticky top-0">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-            MERN-AI Workspace
+            Intelligent RAG | AI
           </h1>
           <div className="text-xs uppercase tracking-widest text-slate-500 font-semibold">
             Status: <span className="text-emerald-400">System Online</span>

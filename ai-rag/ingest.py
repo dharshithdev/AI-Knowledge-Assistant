@@ -14,7 +14,7 @@ def run_ingestion():
     loader = PyPDFLoader("sample.pdf")
     raw_docs = loader.load()
 
-    print("🧹 Cleaning text...")
+    print(" Cleaning text...")
     full_text_sample = ""
     for doc in raw_docs:
         # Removes spaces between single letters but keeps spaces between words
@@ -23,24 +23,20 @@ def run_ingestion():
         doc.page_content = cleaned.strip()
         full_text_sample += doc.page_content + " "
 
-    # Print the first 200 characters to verify cleaning worked
-    print(f"📊 Preview of cleaned text: {full_text_sample[:200]}...")
+    print(f" Preview of cleaned text: {full_text_sample[:200]}...")
 
-    # 3. Split into chunks
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = text_splitter.split_documents(raw_docs)
 
-    # 4. Setup MongoDB & Embeddings
     client = MongoClient(os.getenv("MONGODB_URI"))
     collection = client[os.getenv("DB_NAME")]["pdf_chunks"]
     
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
         google_api_version="v1",
-        output_dimensionality=768 # Forces 768
+        output_dimensionality=768 
     )
 
-    # 5. Upload
     print(f"📤 Uploading {len(chunks)} cleaned chunks to MongoDB...")
     MongoDBAtlasVectorSearch.from_documents(
         documents=chunks,
