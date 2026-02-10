@@ -10,20 +10,22 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-// The "Bridge" Route
+const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://127.0.0.1:8000";
+
+// 2. Update the route
 app.post('/api/ask', async (req, res) => {
     try {
         const { question } = req.body;
 
-        // Sending the question to the Python Brain (Port 8000)
-        const response = await axios.post('http://127.0.0.1:8000/ask', {
+        // Use the variable instead of the hardcoded IP
+        const response = await axios.post(`${PYTHON_SERVICE_URL}/ask`, {
             question: question
         });
 
-        // Sending the answer back to your React app
         res.json(response.data);
     } catch (error) {
-        console.error("❌ AI Service Error:", error.message);
+        // This log will now tell us exactly which URL it tried to hit
+        console.error(`❌ AI Service Error at ${PYTHON_SERVICE_URL}:`, error.message);
         res.status(500).json({ error: "Could not connect to the AI brain." });
     }
 });
