@@ -7,14 +7,12 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from pymongo import MongoClient
 
-load_dotenv()
 
-def run_ingestion():
-    # 1. Load PDF
-    loader = PyPDFLoader("sample.pdf")
+def run_ingestion(filePath):
+    load_dotenv()
+    loader = PyPDFLoader(filePath)
     raw_docs = loader.load()
 
-    print(" Cleaning text...")
     full_text_sample = ""
     for doc in raw_docs:
         # Removes spaces between single letters but keeps spaces between words
@@ -23,7 +21,6 @@ def run_ingestion():
         doc.page_content = cleaned.strip()
         full_text_sample += doc.page_content + " "
 
-    print(f" Preview of cleaned text: {full_text_sample[:200]}...")
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     chunks = text_splitter.split_documents(raw_docs)
@@ -44,7 +41,5 @@ def run_ingestion():
         collection=collection,
         index_name="vector_index"
     )
-    print("✅ Ingestion Complete!")
 
-if __name__ == "__main__":
-    run_ingestion()
+    return len(chunks)

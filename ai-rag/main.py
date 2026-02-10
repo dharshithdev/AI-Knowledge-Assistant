@@ -1,8 +1,10 @@
 # main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 import os
+import shutil
 from query import ask_ai 
+from ingest import run_ingestion;
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -19,6 +21,24 @@ app.add_middleware(
 
 class ChatRequest(BaseModel): 
     question: str
+@app.post("/upload")
+async def upload_document(file: UploadFile = File(...)):
+    temp_path = f"temp_{file.filename}"
+    
+    try:
+        with open(temp_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        num_chunks = run_ingestion(temp_path)
+
+        return {"message": f"Successfully trained on {file.filename} ({num_chunks} chunks)."}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
 @app.post("/ask")
 async def chat_endpoint(request: ChatRequest):
