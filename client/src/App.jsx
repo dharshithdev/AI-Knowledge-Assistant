@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function App() {
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
@@ -11,7 +11,7 @@ function App() {
     if (!question.trim()) return;
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/ask', { question });
+      const res = await axios.post('${API_URL}/api/ask', { question });
       setAnswer(res.data.answer);
     } catch (err) {
       setAnswer("❌ Error: Gateway or AI Service is offline.");
