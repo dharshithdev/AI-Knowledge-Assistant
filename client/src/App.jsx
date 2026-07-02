@@ -45,7 +45,7 @@ function App() {
       const res = await axios.post(`${API_URL}/api/ask`, { question });
       setAnswer(res.data.answer);
     } catch (err) {
-      setAnswer("❌ Error: Gateway or AI Service is offline.");
+      setAnswer("AI Service is offline [API Key expired].");
     }
     setLoading(false);
   };

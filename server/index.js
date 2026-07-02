@@ -21,7 +21,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: "No file uploaded" });
         }
 
-        console.log(`📂 Received file: ${req.file.originalname}. Forwarding to Python...`);
+        console.log(` Received file: ${req.file.originalname}. Forwarding to Python...`);
 
         // Prepare the file to be sent to Python using FormData
         const form = new FormData();
