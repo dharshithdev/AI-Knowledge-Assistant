@@ -38,7 +38,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
         res.json(response.data);
     } catch (error) {
-        console.error("❌ Upload Error:", error.message);
+        console.error(" Upload Error:", error.message);
         res.status(500).json({ error: "Failed to process PDF in the AI Brain." });
     }
 });
@@ -53,11 +53,11 @@ app.post('/api/ask', async (req, res) => {
 
         res.json(response.data);
     } catch (error) {
-        console.error(`❌ AI Service Error at ${PYTHON_SERVICE_URL}:`, error.message);
+        console.error(` AI Service Error at ${PYTHON_SERVICE_URL}:`, error.message);
         res.status(500).json({ error: "Could not connect to the AI brain." });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`🛡️ Gateway Server running on http://localhost:${PORT}`);
+    console.log(`🛡️ Gateway Server running on port ${PORT}`);
 });
